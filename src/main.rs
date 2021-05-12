@@ -1,4 +1,5 @@
 use std::fs;
+use std::env;
 use std::io::Read;
 use std::path::Path;
 use aes::Aes256;
@@ -31,6 +32,10 @@ fn get_macaddr(if_name: &str) -> String {
     return macaddr;
 }
 
+fn get_key() -> String {
+    return get_macaddr("wlp3s0") + "00000000000000";
+}
+
 fn encrypt(key: &str, data: &str) -> String {
     let iv_str = gen_ascii_chars(16);
     let iv = iv_str.as_bytes();
@@ -47,4 +52,14 @@ fn decrypt(key: &str, data: &str) -> String {
     String::from_utf8(cipher.decrypt_vec(&bytes[16..]).unwrap()).unwrap()
 }
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    let text = "";
+    let key = get_key();
+    if args.len() <= 1 {
+        print!("{}", decrypt(&key, &text));
+        return;
+    }
+    let target: &str = &args[1];
+    let text = read_file(target);
+    print!("{}", encrypt(&key, &text));
 }
