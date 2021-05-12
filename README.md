@@ -1,5 +1,5 @@
 # capsule
-This is a program for manag private keys safely.
+This is a program for managing private keys safely.
 
 ### Usage
 **git clone**
