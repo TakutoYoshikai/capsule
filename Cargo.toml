@@ -1,5 +1,5 @@
 [package]
-name = "cupsule"
+name = "capsule"
 version = "0.1.0"
 authors = ["lucky <takuto.yoshikai@gmail.com>"]
 edition = "2018"
