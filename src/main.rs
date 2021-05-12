@@ -32,8 +32,8 @@ fn get_macaddr(if_name: &str) -> String {
     return macaddr;
 }
 
-fn get_key() -> String {
-    return get_macaddr("wlp3s0") + "00000000000000";
+fn get_key(if_name: &str) -> String {
+    return get_macaddr(if_name) + "00000000000000";
 }
 
 fn encrypt(key: &str, data: &str) -> String {
@@ -54,7 +54,7 @@ fn decrypt(key: &str, data: &str) -> String {
 fn main() {
     let args: Vec<String> = env::args().collect();
     let text = "CHANGE HERE";
-    let key = get_key();
+    let key = get_key("CHANGE HERE TO NETWORK INTERFACE.");
     if args.len() <= 1 {
         print!("{}", decrypt(&key, &text));
         return;

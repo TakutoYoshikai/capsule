@@ -13,7 +13,12 @@ git clone https://github.com/TakutoYoshikai/capsule.git
 cargo run /path/to/secret-key
 ```
 
-**include encrypted secret key in this program**
+**write your network interface in main**
+```rust
+let key = get_key("CHANGE HERE TO NETWORK INTERFACE.");
+```
+
+**include encrypted secret key in this program in main**
 ```rust
 //You can paste encrypted secret key.
 let text = "CHANGE HERE";
