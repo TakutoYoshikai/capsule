@@ -53,7 +53,7 @@ fn decrypt(key: &str, data: &str) -> String {
 }
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let text = "";
+    let text = "CHANGE HERE";
     let key = get_key();
     if args.len() <= 1 {
         print!("{}", decrypt(&key, &text));
