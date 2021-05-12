@@ -3,7 +3,7 @@ use std::env;
 use std::io::Read;
 use std::path::Path;
 use std::fs::File;
-use std::{io, io::Write};
+use std::io::Write;
 use aes::Aes256;
 use block_modes::{BlockMode, Cbc};
 use block_modes::block_padding::Pkcs7;
@@ -62,11 +62,21 @@ fn decrypt(key: &str, data: &str) -> Vec<u8> {
     let cipher = AesCbc::new_var(key.as_bytes(), &bytes[0..16]).unwrap();
     cipher.decrypt_vec(&bytes[16..]).unwrap()
 }
+
+fn save(filename: &str, data: Vec<u8>) {
+    let mut file = File::create(filename).unwrap();
+    file.write_all(&data).unwrap();
+    file.flush().unwrap();
+}
 fn main() {
     let args: Vec<String> = env::args().collect();
     let key = get_key(IFACE);
     if args.len() <= 1 {
-        io::stdout().write(&decrypt(&key, &ENCRYPTED_TEXT)).unwrap();
+        let mut path = std::env::current_exe().unwrap();
+        path.pop();
+        path.push("data");
+        let decrypted = decrypt(&key, &ENCRYPTED_TEXT);
+        save(&path.into_os_string().into_string().unwrap(), decrypted);
         return;
     }
     let target: &str = &args[1];
