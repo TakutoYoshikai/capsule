@@ -66,7 +66,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let key = get_key(IFACE);
     if args.len() <= 1 {
-        io::stdout().write(&decrypt(&key, &ENCRYPTED_TEXT));
+        io::stdout().write(&decrypt(&key, &ENCRYPTED_TEXT)).unwrap();
         return;
     }
     let target: &str = &args[1];
