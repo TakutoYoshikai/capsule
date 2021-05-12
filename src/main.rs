@@ -8,6 +8,8 @@ use block_modes::block_padding::Pkcs7;
 use rand::seq::SliceRandom;
 
 type AesCbc = Cbc<Aes256, Pkcs7>;
+const ENCRYPTED_TEXT: &str = "";
+const IFACE: &str = "wlp3s0";
 
 const BASE_STR: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -53,10 +55,9 @@ fn decrypt(key: &str, data: &str) -> String {
 }
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let text = "CHANGE HERE";
-    let key = get_key("CHANGE HERE TO NETWORK INTERFACE.");
+    let key = get_key(IFACE);
     if args.len() <= 1 {
-        print!("{}", decrypt(&key, &text));
+        print!("{}", decrypt(&key, &ENCRYPTED_TEXT));
         return;
     }
     let target: &str = &args[1];

@@ -15,13 +15,13 @@ cargo run /path/to/secret-key
 
 **write your network interface in main**
 ```rust
-let key = get_key("CHANGE HERE TO NETWORK INTERFACE.");
+const IFACE: &str = "wlp3s0";
 ```
 
 **include encrypted secret key in this program in main**
 ```rust
-//You can paste encrypted secret key.
-let text = "CHANGE HERE";
+//You can paste here encrypted secret key.
+const ENCRYPTED_TEXT: &str = "";
 ```
 
 **build**
