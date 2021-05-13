@@ -11,10 +11,20 @@ use rand::seq::SliceRandom;
 
 type AesCbc = Cbc<Aes256, Pkcs7>;
 const ENCRYPTED_TEXT: &str = "";
-const IFACE: &str = "wlp3s0";
 
 const BASE_STR: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+fn get_ifaces() -> Vec<String> {
+    let net = Path::new("/sys/class/net");
+    let entry = fs::read_dir(net).expect("Error");
+    let mut ifaces = entry.filter_map(|p| p.ok())
+                      .map(|p| p.path().file_name().expect("Error").to_os_string())
+                      .filter_map(|s| s.into_string().ok())
+                      .filter(|s| s.starts_with("e") || s.starts_with("w") || s.starts_with("b"))
+                      .collect::<Vec<String>>();
+    ifaces.sort();
+    return ifaces;
+}
 fn read_file(path: &str) -> Option<Vec<u8>> {
     let mut file = File::open(path).unwrap();
     let metadata = fs::metadata(path).unwrap();
@@ -34,17 +44,37 @@ fn gen_ascii_chars(size: usize) -> String {
             .collect()
     ).unwrap()
 }
-fn get_macaddr(if_name: &str) -> String {
+fn get_macaddr(if_name: &str) -> Option<String> {
     let net = Path::new("/sys/class/net");
     let iface = net.join(if_name).join("address");
-    let mut f = fs::File::open(iface).unwrap();
+    let mut file = match fs::File::open(iface) {
+        Ok(f) => f,
+        Err(_) => return None,
+    };
     let mut macaddr = String::new();
-    f.read_to_string(&mut macaddr).unwrap();
-    return macaddr;
+    match file.read_to_string(&mut macaddr) {
+        Ok(_) => (),
+        Err(_) => return None,
+    };
+    return Some(macaddr);
 }
 
-fn get_key(if_name: &str) -> String {
-    return get_macaddr(if_name) + "00000000000000";
+fn get_key() -> String {
+    let ifaces = get_ifaces();
+    let mut key: String = "".to_string();
+    for iface in ifaces {
+        match get_macaddr(&iface) {
+            Some(macaddr) => key += &macaddr,
+            None => (),
+        }
+    }
+    loop {
+        if key.len() >= 32 {
+            break;
+        }
+        key += "0";
+    }
+    return key.chars().skip(0).take(32).collect();
 }
 
 fn encrypt(key: &str, data: &[u8]) -> String {
@@ -70,7 +100,7 @@ fn save(filename: &str, data: Vec<u8>) {
 }
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let key = get_key(IFACE);
+    let key = get_key();
     if args.len() <= 1 {
         let mut path = std::env::current_exe().unwrap();
         path.pop();
