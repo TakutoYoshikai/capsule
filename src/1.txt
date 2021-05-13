@@ -1,0 +1,13 @@
+use std::fs;
+use std::env;
+use std::io::Read;
+use std::path::Path;
+use std::fs::File;
+use std::io::Write;
+use aes::Aes256;
+use block_modes::{BlockMode, Cbc};
+use block_modes::block_padding::Pkcs7;
+use rand::seq::SliceRandom;
+
+type AesCbc = Cbc<Aes256, Pkcs7>;
+const ENCRYPTED_TEXT: &str = "
