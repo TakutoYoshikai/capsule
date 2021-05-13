@@ -13,11 +13,6 @@ git clone https://github.com/TakutoYoshikai/capsule.git
 cargo run /path/to/secret-key
 ```
 
-**write your network interface in main**
-```rust
-const IFACE: &str = "wlp3s0";
-```
-
 **include encrypted secret key in this program in main**
 ```rust
 //You can paste here encrypted secret key.
