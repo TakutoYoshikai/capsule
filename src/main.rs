@@ -68,6 +68,7 @@ fn get_key() -> String {
             None => (),
         }
     }
+    key.retain(|c| c != ':' && c != '\n');
     loop {
         if key.len() >= 32 {
             break;
