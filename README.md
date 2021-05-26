@@ -1,5 +1,5 @@
 # capsule
-This is a program for managing private keys safely.
+This is a program to store secret data safely. capsule file is an executable file to extract encrypted data in the capsule file. The secret data is encrypted by MAC address of your PC automatically. You should separate and store the secret data and your PC.
 
 ### Usage
 **git clone**
