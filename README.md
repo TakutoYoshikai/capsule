@@ -7,15 +7,15 @@ This is a program to store secret data safely. capsule file is an executable fil
 git clone https://github.com/TakutoYoshikai/capsule.git
 ```
 
-**encrypt secret key**
+**encrypt secret data**
 ```bash
 # You can copy this output.
-cargo run /path/to/secret-key
+cargo run /path/to/secret-data
 ```
 
-**include encrypted secret key in this program in main**
+**include encrypted secret data in this program in main**
 ```rust
-//You can paste here encrypted secret key.
+//You can paste here encrypted secret data.
 const ENCRYPTED_TEXT: &str = "";
 ```
 
